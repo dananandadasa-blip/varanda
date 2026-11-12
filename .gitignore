@@ -1,0 +1,8 @@
+# Dados de quem usa a skill — nunca versionar
+metricas/
+
+# Pacotes e lixo de sistema
+*.zip
+.DS_Store
+Thumbs.db
+desktop.ini

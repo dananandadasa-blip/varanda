@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como a Varanda funciona</title>
+<meta name="description" content="O caminho que um pedido percorre dentro da Varanda, do número que você entrega até a resposta de seis linhas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cal:#f3f6f9; --cal-2:#e4ebf3; --anil:#1b2f6b; --anil-2:#121f4a; --anil-3:#2a4594;
+  --ceu:#bfd6ee; --ouro:#f2b632; --samambaia:#2a7354; --oxido:#ad3620;
+  --tinta:#16224a; --tinta-2:#45527c; --sobre-anil:#eef2fb; --sobre-anil-2:#b9c6ec;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --texto:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --friso:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%231b2f6b'/%3E%3Cg fill='%232a4594'%3E%3Ccircle r='30'/%3E%3Ccircle cx='96' r='30'/%3E%3Ccircle cy='96' r='30'/%3E%3Ccircle cx='96' cy='96' r='30'/%3E%3C/g%3E%3Cg fill='%23bfd6ee'%3E%3Ccircle r='14'/%3E%3Ccircle cx='96' r='14'/%3E%3Ccircle cy='96' r='14'/%3E%3Ccircle cx='96' cy='96' r='14'/%3E%3C/g%3E%3Cpath d='M48 26 70 48 48 70 26 48Z' fill='%23f2b632'/%3E%3Cpath d='M48 38 58 48 48 58 38 48Z' fill='%231b2f6b'/%3E%3Cg fill='%232a7354'%3E%3Ccircle cx='48' cy='6' r='5'/%3E%3Ccircle cx='48' cy='90' r='5'/%3E%3Ccircle cx='6' cy='48' r='5'/%3E%3Ccircle cx='90' cy='48' r='5'/%3E%3C/g%3E%3Cpath d='M0 0H96V96H0Z' fill='none' stroke='%23121f4a' stroke-width='2'/%3E%3C/svg%3E");
+}
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:light;scroll-behavior:smooth;scroll-padding-top:1.5rem;scrollbar-color:var(--anil-3) var(--cal-2)}
+body{margin:0;background:var(--cal);color:var(--tinta);font:400 1.0625rem/1.65 var(--texto);-webkit-text-size-adjust:100%}
+::selection{background:var(--ouro);color:var(--anil-2)}
+a{color:var(--anil);text-decoration-thickness:.08em;text-underline-offset:.2em}
+a:hover{text-decoration-thickness:.16em}
+:focus-visible{outline:3px solid var(--ouro);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;letter-spacing:-.02em;text-wrap:balance;margin:0}
+p{margin:0 0 1em;text-wrap:pretty}
+code,kbd{font-family:var(--mono);font-size:.92em}
+.so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- faixa de abertura ---------- */
+.abre{background:var(--anil);color:var(--sobre-anil);padding:clamp(2.5rem,7vw,5.5rem) 0 0}
+.abre a{color:var(--sobre-anil)}
+.miolo{width:min(100% - 2rem,72rem);margin-inline:auto}
+.abre h1{font-size:clamp(2.6rem,8.2vw,5.6rem);font-weight:800;max-width:11ch}
+.abre .resposta{font-size:clamp(1.15rem,2.1vw,1.45rem);line-height:1.5;max-width:34ch;margin:1.5rem 0 0}
+.abre .resposta strong{color:var(--ouro);font-weight:700}
+.abre-grade{display:grid;gap:2rem 4rem;align-items:end}
+.sumario{list-style:none;margin:0;padding:0;display:grid;gap:.15rem;font-family:var(--display);font-weight:600;font-size:1.1rem}
+.sumario a{display:flex;gap:.75rem;align-items:baseline;padding:.45rem 0;text-decoration:none;border-bottom:1px solid var(--anil-3)}
+.sumario a::after{content:"";flex:1}
+.sumario a span{color:var(--sobre-anil-2);font:400 .9rem var(--texto);order:3}
+.sumario a:hover{color:var(--ouro)}
+.friso{height:96px;margin-top:clamp(2.5rem,6vw,4.5rem);background:var(--friso) center top/96px 96px repeat-x}
+@media (min-width:56rem){.abre-grade{grid-template-columns:1.25fr 1fr}}
+
+/* ---------- mapa inteiro ---------- */
+.secao-mapa{padding:clamp(3.5rem,8vw,6rem) 0 clamp(3rem,6vw,5rem)}
+.secao-mapa h2,.leitura h2{font-size:clamp(1.9rem,4.6vw,3.1rem);font-weight:700}
+.entrada-mapa{max-width:62ch;margin:1.1rem 0 2.5rem;font-size:1.125rem}
+.mapa{position:relative;display:grid;gap:0;padding:clamp(1rem,3vw,2rem);background:#fff;border:2px solid var(--anil);border-radius:6px}
+.faixa-mapa{display:grid;gap:.85rem;padding:1.1rem 0}
+.faixa-mapa>h3{font-size:1.05rem;font-weight:700;color:var(--tinta-2);letter-spacing:0}
+.desce{height:2.2rem;display:grid;place-items:center;color:var(--anil)}
+.desce svg{width:1.4rem;height:2.2rem}
+.chips{display:flex;flex-wrap:wrap;gap:.6rem;list-style:none;margin:0;padding:0}
+.chip{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem .6rem .7rem;border:2px solid var(--anil);border-radius:4px;background:var(--cal);font-weight:700;line-height:1.35;transition:background .35s var(--ease),color .35s var(--ease)}
+.chip small{display:block;font-weight:400;color:var(--tinta-2);font-size:.86rem}
+.chip svg{width:1.7rem;height:1.7rem;flex:none}
+.trilha{list-style:none;margin:0;padding:0;display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(8.4rem,1fr))}
+.peca{position:relative;display:grid;align-content:space-between;gap:.9rem;aspect-ratio:1;min-height:8.4rem;padding:.85rem;color:var(--sobre-anil);font-family:var(--display);font-weight:700;font-size:1.08rem;line-height:1.15;border-radius:3px;
+  background:
+   radial-gradient(circle at 0 0,var(--ceu) 0 1.05rem,transparent 1.1rem),
+   radial-gradient(circle at 100% 0,var(--ceu) 0 1.05rem,transparent 1.1rem),
+   radial-gradient(circle at 0 100%,var(--ceu) 0 1.05rem,transparent 1.1rem),
+   radial-gradient(circle at 100% 100%,var(--ceu) 0 1.05rem,transparent 1.1rem),
+   var(--anil);
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.peca b{font-size:2.3rem;font-weight:800;line-height:1;color:var(--ouro);padding-left:1.1rem}
+.peca span{padding:0 .35rem .15rem}
+.extra{display:grid;gap:.6rem;padding:1rem;border:2px dashed var(--anil-3);border-radius:4px}
+.extra p{margin:0;color:var(--tinta-2);font-size:.95rem}
+.volta{display:flex;gap:.9rem;align-items:center;margin-top:1.2rem;padding-top:1.2rem;border-top:2px dashed var(--anil-3);color:var(--tinta-2)}
+.volta svg{width:2.6rem;height:2.6rem;flex:none;color:var(--samambaia)}
+.volta p{margin:0;max-width:52ch}
+.chip[data-no].aqui,.recebe [data-no].aqui{background:var(--ouro);color:var(--anil-2)}
+.chip[data-no].aqui small{color:var(--anil-2)}
+.peca.aqui{transform:translateY(-6px);box-shadow:0 10px 18px -8px rgb(18 31 74/.55);background-color:var(--anil-2)}
+.peca.aqui::after{content:"";position:absolute;right:.7rem;top:.7rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--ouro);box-shadow:0 3px 6px -1px rgb(18 31 74/.6);animation:pousa .6s var(--ease)}
+.peca.feita b{color:var(--ceu)}
+.volta.aqui{color:var(--tinta)}.volta.aqui svg{animation:gira 1.2s var(--ease)}
+@keyframes pousa{from{transform:translateY(-1.4rem) scale(.6);opacity:0}}
+@keyframes gira{from{transform:rotate(-200deg)}}
+
+/* narração do pedido de exemplo */
+.narra{margin-top:1.5rem;display:grid;gap:1rem;padding:clamp(1rem,3vw,1.75rem);background:var(--anil);color:var(--sobre-anil);border-radius:6px}
+.narra h3{font-size:1.35rem;font-weight:700}
+.narra h3 small{display:block;font:400 .9rem/1.4 var(--texto);color:var(--sobre-anil-2);letter-spacing:0;margin-top:.35rem}
+.passos{margin:0;padding:0 0 0 1.3rem;display:grid;gap:.7rem;max-width:66ch}
+.passos li::marker{color:var(--ouro);font-weight:700}
+.passos strong{color:var(--ouro)}
+.comandos{display:none;gap:.75rem;align-items:center;flex-wrap:wrap}
+.botao{font:700 1rem var(--display);padding:.7rem 1.15rem;border-radius:4px;border:2px solid var(--ouro);background:var(--ouro);color:var(--anil-2);cursor:pointer;transition:transform .2s var(--ease),background .2s}
+.botao:hover{background:#ffd062}.botao:active{transform:translateY(2px)}
+.botao.quieto{background:transparent;color:var(--sobre-anil);border-color:var(--sobre-anil-2)}
+.botao.quieto:hover{background:var(--anil-3)}
+.botao[disabled]{opacity:.45;cursor:default;transform:none}
+.conta{font-variant-numeric:tabular-nums;color:var(--sobre-anil-2);margin-left:auto}
+.js .comandos{display:flex}
+.js .passos{list-style:none;padding:0;min-height:8.5rem;align-content:start}
+.js .passos li{display:none;font-size:1.15rem;line-height:1.55}
+.js .passos li.aqui{display:block;animation:entra .5s var(--ease)}
+@keyframes entra{from{opacity:0;transform:translateY(.6rem)}}
+
+/* ---------- leitura com corredor ---------- */
+.leitura{display:grid;gap:3rem;padding-bottom:5rem}
+.corredor{display:none}
+.coluna{min-width:0}
+.coluna>section{padding-top:clamp(3rem,7vw,5rem)}
+.coluna>section>*{max-width:68ch}
+.coluna h2{display:flex;gap:1rem;align-items:center}
+.coluna h2 .num{flex:none;display:grid;place-items:center;width:3.2rem;height:3.2rem;border-radius:3px;font-size:1.7rem;font-weight:800;color:var(--ouro);
+  background:radial-gradient(circle at 0 0,var(--ceu) 0 .5rem,transparent .55rem),radial-gradient(circle at 100% 100%,var(--ceu) 0 .5rem,transparent .55rem),var(--anil)}
+.coluna h2+p{margin-top:1.1rem;font-size:1.15rem}
+.coluna h3{font-size:1.3rem;font-weight:700;margin:2.2rem 0 .6rem;letter-spacing:-.01em}
+.coluna ul,.coluna ol{padding-left:1.25rem;margin:0 0 1em}
+.coluna li{margin-bottom:.45rem}
+.coluna li::marker{color:var(--anil-3);font-weight:700}
+.termo{border-bottom:2px dotted var(--anil-3);cursor:help}
+
+.linhas{width:100%;border-collapse:collapse;margin:1.2rem 0;max-width:68ch}
+.linhas th,.linhas td{text-align:left;vertical-align:top;padding:.85rem .9rem .85rem 0;border-bottom:1px solid var(--cal-2)}
+.linhas thead th{font:700 .95rem var(--display);color:var(--tinta-2);border-bottom:2px solid var(--anil)}
+.linhas tbody th{font-weight:700;width:38%}
+.linhas svg{width:1.6rem;height:1.6rem;vertical-align:-.4rem;margin-right:.5rem;color:var(--anil)}
+
+.conta-ex{margin:1.3rem 0;padding:1.1rem 1.25rem;background:#fff;border:2px solid var(--anil);border-radius:4px;font-variant-numeric:tabular-nums}
+.conta-ex .linha{display:flex;flex-wrap:wrap;gap:.4rem .7rem;align-items:baseline;font:700 clamp(1.15rem,3.4vw,1.6rem)/1.3 var(--display)}
+.conta-ex .linha i{font-style:normal;color:var(--tinta-2);font-weight:500}
+.conta-ex .linha mark{background:var(--ouro);color:var(--anil-2);padding:.05em .4em;border-radius:3px}
+.conta-ex small,.rotulo-ex{display:block;color:var(--tinta-2);font-size:.9rem;margin-top:.5rem}
+
+.selos{list-style:none;padding:0!important;display:grid;gap:.9rem;margin:1.2rem 0}
+.selos li{display:grid;grid-template-columns:2.2rem 1fr;gap:.9rem;align-items:start;margin:0}
+.selos svg{width:2.2rem;height:2.2rem;color:var(--anil)}
+.selos b{font-family:var(--mono);font-size:.95em}
+
+.regua{margin:1.4rem 0 .6rem;display:grid;grid-template-columns:5fr 4fr 6fr;border:2px solid var(--anil);border-radius:4px;overflow:hidden;font:700 .95rem/1.25 var(--display)}
+.regua div{padding:.8rem .7rem;min-height:5.2rem;display:grid;align-content:space-between;gap:.4rem}
+.regua small{font:400 .82rem var(--texto)}
+.regua .der small,.regua .inc small{color:var(--tinta)}
+.regua .der{background:repeating-linear-gradient(135deg,#fff 0 7px,var(--cal-2) 7px 14px);color:var(--oxido)}
+.regua .inc{background:#fff;border-inline:2px solid var(--anil)}
+.regua .con{background:var(--samambaia);color:#fff}
+.regua-nums{display:grid;grid-template-columns:5fr 4fr 6fr;font-variant-numeric:tabular-nums;color:var(--tinta-2);font-size:.9rem;margin-bottom:1.2rem}
+.regua-nums span:nth-child(2),.regua-nums span:nth-child(3){transform:translateX(-.35em)}
+
+.seis{margin:1.3rem 0;padding:1.3rem 1.4rem;background:var(--anil-2);color:var(--sobre-anil);border-radius:6px;font:400 .95rem/1.7 var(--mono);overflow-x:auto}
+.seis ol{list-style:none;margin:0;padding:0;display:grid;gap:.35rem;min-width:18rem}
+.seis li{margin:0}
+.seis b{color:var(--ouro);font-weight:700}
+.js .seis.espera li{opacity:0;transform:translateX(-.6rem)}
+.js .seis li{transition:opacity .5s var(--ease),transform .5s var(--ease);transition-delay:calc(var(--i)*.14s)}
+.pasta{margin:1.2rem 0;padding:1.1rem 1.25rem;background:#fff;border:2px solid var(--anil);border-radius:4px;font:400 .95rem/1.75 var(--mono);overflow-x:auto;white-space:pre}
+.pasta span{color:var(--tinta-2);font-family:var(--texto)}
+
+.aviso{margin:1.3rem 0;padding:1.1rem 1.25rem;border:2px solid var(--anil);border-radius:4px;background:
+  linear-gradient(var(--ouro),var(--ouro)) top/100% .55rem no-repeat,#fff}
+.aviso p:first-child{font:800 1.2rem var(--display);margin:.6rem 0 .4rem}
+.aviso code{display:block;margin-top:.7rem;padding:.6rem .8rem;background:var(--cal);border-radius:3px;overflow-x:auto}
+
+.nunca{list-style:none;padding:0!important;margin:1.4rem 0;display:grid;gap:0}
+.nunca li{display:grid;grid-template-columns:1.9rem 1fr;gap:.9rem;padding:.95rem 0;margin:0;border-bottom:1px solid var(--cal-2)}
+.nunca svg{width:1.9rem;height:1.9rem;color:var(--oxido)}
+.nunca strong{display:block;font:700 1.12rem/1.3 var(--display)}
+
+.comeco{margin-top:clamp(3rem,7vw,5rem);background:var(--anil);color:var(--sobre-anil)}
+.comeco .friso{margin:0}
+.comeco .miolo{padding:clamp(2.5rem,6vw,4.5rem) 0}
+.comeco h2{font-size:clamp(1.9rem,4.6vw,3.1rem);font-weight:700}
+.comeco ol{max-width:62ch;padding-left:1.3rem;margin:1.2rem 0 0;display:grid;gap:.8rem}
+.comeco li::marker{color:var(--ouro);font-weight:700}
+.copia{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:.6rem}
+.copia code{padding:.65rem .9rem;background:var(--anil-2);border-radius:4px;font-size:1rem}
+.rodape{padding:1.5rem 0 2.5rem;color:var(--sobre-anil-2);font-size:.9rem}
+.rodape p{margin:0;max-width:70ch}
+
+@media (min-width:64rem){
+  .leitura{grid-template-columns:13.5rem minmax(0,1fr);gap:4.5rem}
+  .corredor{display:block;position:sticky;top:1.5rem;align-self:start;margin-top:clamp(3rem,7vw,5rem);max-height:calc(100vh - 3rem);overflow:auto}
+  .corredor ol{list-style:none;margin:0;padding:0;display:grid;gap:4px;position:relative}
+  .corredor a{display:grid;grid-template-columns:2.6rem 1fr;gap:.75rem;align-items:center;text-decoration:none;font:600 .95rem/1.2 var(--display);color:var(--tinta-2);padding-right:.4rem}
+  .corredor a i{font-style:normal;display:grid;place-items:center;width:2.6rem;height:2.6rem;border:2px solid var(--anil);border-radius:3px;font-weight:800;color:var(--anil);background:#fff;transition:background .4s var(--ease),color .4s var(--ease)}
+  .corredor a:hover{color:var(--anil)}
+  .corredor a.feita i{background:linear-gradient(135deg,var(--anil) 50%,#fff 50%);color:transparent}
+  .corredor a[aria-current]{color:var(--tinta)}
+  .corredor a[aria-current] i{background:var(--anil);color:var(--ouro)}
+  .ficha{position:absolute;left:1.85rem;top:-.35rem;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--ouro);box-shadow:0 3px 6px -1px rgb(18 31 74/.6);transform:translateY(var(--y,0));transition:transform .7s var(--ease);pointer-events:none}
+}
+@media (min-width:44rem){
+  .trilha{grid-template-columns:repeat(5,1fr)}
+  .peca{font-size:clamp(.95rem,1.35vw,1.15rem)}
+}
+@media (max-width:30rem){
+  .trilha{grid-template-columns:1fr 1fr}
+  .peca{aspect-ratio:auto;min-height:7rem}
+  .linhas tbody th{width:auto;display:block;padding-bottom:0;border-bottom:0}
+  .linhas td{display:block;padding-top:.3rem}
+  .linhas thead{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-planilha" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="24" height="24" rx="2"/><path d="M4 12h24M4 20h24M13 4v24"/></g>
+    <g id="i-caixa" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11h22v15a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M3 5h26v6H3zM13 17h6"/></g>
+    <g id="i-foto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="16" height="26" rx="3"/><path d="M12 21l3-4 3 3 2-2M14 8h4"/></g>
+    <g id="i-tomada" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v7M20 4v7M8 11h16v4a8 8 0 0 1-16 0zM16 23v6"/></g>
+    <g id="i-fala" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h22v15H14l-6 5v-5H5z"/><path d="M10 11h12M10 16h8"/></g>
+    <g id="i-folha" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h11l6 6v20H8z"/><path d="M19 3v6h6M12 16h9M12 21h9"/></g>
+    <g id="i-nao" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="4" width="24" height="24" rx="2"/><path d="M11 11l10 10M21 11L11 21"/></g>
+    <g id="i-volta" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M26 16a10 10 0 1 1-3.5-7.6"/><path d="M23 3v6h-6"/></g>
+  </defs>
+</svg>
+
+<header class="abre">
+  <div class="miolo abre-grade">
+    <div>
+      <h1>Como a Varanda funciona</h1>
+      <p class="resposta">Você traz os números das suas redes. A Varanda faz a conta, explica o que eles querem dizer e sugere até três coisas para mudar. <strong>Ela nunca entra na sua conta sozinha.</strong></p>
+    </div>
+    <nav aria-label="Nesta página">
+      <ul class="sumario">
+        <li><a href="#mapa">O mapa inteiro <span>1 min</span></a></li>
+        <li><a href="#p1">O caminho, passo a passo <span>6 passos</span></a></li>
+        <li><a href="#extras">Pedidos extras <span>tendência e roteiro</span></a></li>
+        <li><a href="#nunca">O que ela nunca faz <span>7 limites</span></a></li>
+        <li><a href="#comeco">Como começar <span>3 passos</span></a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="friso" role="presentation"></div>
+</header>
+
+<main>
+<section class="secao-mapa miolo" id="mapa" aria-labelledby="t-mapa">
+  <h2 id="t-mapa">O mapa inteiro</h2>
+  <p class="entrada-mapa">Pense num boletim da escola. As notas estão lá, mas o boletim não diz o que estudar. A Varanda é a amiga que senta com você, olha as notas e ajuda a escolher o próximo passo. O desenho abaixo mostra o caminho de cima para baixo.</p>
+
+  <div class="mapa">
+    <div class="faixa-mapa">
+      <h3>Você entrega um destes</h3>
+      <ul class="chips">
+        <li class="chip" data-no="entrega"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-planilha"/></svg><span>Planilha<small>CSV do painel</small></span></li>
+        <li class="chip" data-no="entrega"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caixa"/></svg><span>Arquivo do Instagram<small>o ZIP oficial</small></span></li>
+        <li class="chip" data-no="entrega"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-foto"/></svg><span>Foto da tela<small>print do painel</small></span></li>
+        <li class="chip" data-no="entrega"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-tomada"/></svg><span>Ferramenta ligada<small>um MCP que você já usa</small></span></li>
+      </ul>
+    </div>
+    <div class="desce" aria-hidden="true"><svg viewBox="0 0 22 36" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v30M3 24l8 8 8-8"/></svg></div>
+    <div class="faixa-mapa">
+      <h3>A Varanda trabalha, um passo de cada vez</h3>
+      <ol class="trilha">
+        <li class="peca" data-no="p1"><b>1</b><span>Conhece você</span></li>
+        <li class="peca" data-no="p2"><b>2</b><span>Arruma os dados</span></li>
+        <li class="peca" data-no="p3"><b>3</b><span>Faz as contas</span></li>
+        <li class="peca" data-no="p4"><b>4</b><span>Acha a causa</span></li>
+        <li class="peca" data-no="p5"><b>5</b><span>Monta o plano</span></li>
+      </ol>
+      <div class="extra">
+        <p>Fora do caminho, só quando você pede:</p>
+        <ul class="chips">
+          <li class="chip">Pesquisar tendências</li>
+          <li class="chip">Escrever ou simplificar um roteiro</li>
+        </ul>
+      </div>
+    </div>
+    <div class="desce" aria-hidden="true"><svg viewBox="0 0 22 36" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v30M3 24l8 8 8-8"/></svg></div>
+    <div class="faixa-mapa recebe">
+      <h3>Você recebe os dois</h3>
+      <ul class="chips">
+        <li class="chip" data-no="recebe"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-fala"/></svg><span>Seis linhas na conversa<small>o número, o que ele quer dizer, o que fazer</small></span></li>
+        <li class="chip" data-no="recebe"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-folha"/></svg><span>Um relatório guardado<small>num arquivo, na sua pasta</small></span></li>
+      </ul>
+    </div>
+    <div class="volta" data-no="volta">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-volta"/></svg>
+      <p><strong>E o caminho recomeça.</strong> Na próxima vez, antes de qualquer conta nova, a Varanda confere se o teste do plano deu certo.</p>
+    </div>
+  </div>
+
+  <div class="narra" id="narra">
+    <h3>Acompanhe um pedido pelo mapa<small>A Lia e os números dela são um exemplo inventado para esta página.</small></h3>
+    <ol class="passos" aria-live="polite">
+      <li data-alvo="entrega">A Lia publica dicas de plantas para apartamento. Ela salva a <strong>planilha do mês</strong> e pede: <code>/varanda analise metricas/dados/2026-11.csv</code></li>
+      <li data-alvo="p1"><strong>Conhece você.</strong> A Varanda lê a ficha da Lia: o que ela publica, para quem e o que quer que aconteça. Na primeira vez, são três perguntas.</li>
+      <li data-alvo="p2"><strong>Arruma os dados.</strong> Abre a planilha, confere colunas e datas. São 12 posts, de 13/10 a 08/11.</li>
+      <li data-alvo="p3"><strong>Faz as contas.</strong> Divide os salvamentos pelas pessoas alcançadas, post por post. Um Reel alcançou 19 vezes mais gente que o normal e fica fora da base, para não puxar tudo para cima.</li>
+      <li data-alvo="p4"><strong>Acha a causa.</strong> Carrossel teve 37,6 salvamentos a cada mil pessoas. A base do período foi 18,6. Causa provável: o público guarda conteúdo de consulta.</li>
+      <li data-alvo="p5"><strong>Monta o plano.</strong> Duas mudanças no conteúdo, um dado para buscar no painel e um teste com régua marcada antes: Reels de até 25 segundos, por quatro semanas.</li>
+      <li data-alvo="recebe"><strong>A Lia recebe</strong> seis linhas na conversa e o relatório completo num arquivo da pasta dela.</li>
+      <li data-alvo="volta"><strong>Um mês depois,</strong> a primeira coisa que a Varanda diz é o veredito do teste: confirmou, derrubou ou ainda não dá para saber.</li>
+    </ol>
+    <div class="comandos">
+      <button class="botao quieto" type="button" id="antes">Voltar</button>
+      <button class="botao" type="button" id="depois">Avançar o pedido</button>
+      <span class="conta" id="conta"></span>
+    </div>
+  </div>
+</section>
+
+<div class="miolo leitura">
+  <nav class="corredor" aria-label="Passos do caminho">
+    <ol>
+      <li><a href="#p1"><i>1</i>Conhece você</a></li>
+      <li><a href="#p2"><i>2</i>Arruma os dados</a></li>
+      <li><a href="#p3"><i>3</i>Faz as contas</a></li>
+      <li><a href="#p4"><i>4</i>Acha a causa</a></li>
+      <li><a href="#p5"><i>5</i>Monta o plano</a></li>
+      <li><a href="#p6"><i>6</i>Responde</a></li>
+      <li><a href="#extras"><i>+</i>Pedidos extras</a></li>
+      <li><a href="#nunca"><i>×</i>O que ela nunca faz</a></li>
+      <li class="ficha" aria-hidden="true"></li>
+    </ol>
+  </nav>
+
+  <div class="coluna">
+    <section id="p1" aria-labelledby="t1">
+      <h2 id="t1"><span class="num" aria-hidden="true">1</span>Quem é você?</h2>
+      <p>O mesmo número é ótimo para um perfil e fraco para outro. Por isso a Varanda começa por você.</p>
+      <p>Na primeira conversa ela faz três perguntas: o que você publica, para quem, e o que você quer que aconteça. As respostas ficam numa ficha curta, guardada na sua pasta. Nas vezes seguintes ela só relê a ficha.</p>
+      <p>Ela também abre o caderno de rodadas anteriores. Se existe um teste em andamento, ele é julgado antes de qualquer conta nova.</p>
+      <p>Se você só quer um roteiro ou tirar uma dúvida sobre um número, ela pula as perguntas e vai direto ao pedido.</p>
+    </section>
+
+    <section id="p2" aria-labelledby="t2">
+      <h2 id="t2"><span class="num" aria-hidden="true">2</span>O que eu preciso entregar?</h2>
+      <p>Os números de pelo menos cinco posts, com três informações por post: quantas pessoas viram, quantas salvaram e quantas compartilharam. Com menos de cinco posts não dá para falar em padrão, e ela avisa.</p>
+      <table class="linhas">
+        <thead><tr><th scope="col">Jeito de entregar</th><th scope="col">Como funciona</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-planilha"/></svg>Planilha do painel</th><td>O jeito mais limpo. No Instagram sai pelo Meta Business Suite e pede conta profissional.</td></tr>
+          <tr><th scope="row"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caixa"/></svg>Arquivo oficial do Instagram</th><td>Um ZIP grande. Ela tira de dentro só os posts e os números deles. O resto continua fechado.</td></tr>
+          <tr><th scope="row"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-foto"/></svg>Foto da tela</th><td>Ela copia os números da imagem e mostra o que copiou, para você conferir.</td></tr>
+          <tr><th scope="row"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-tomada"/></svg>Ferramenta ligada</th><td>Se você já usa um <span class="termo" title="MCP: uma ponte que liga o agente de IA a outro serviço, como o Metricool.">MCP</span> de redes sociais, ela busca por ele.</td></tr>
+        </tbody>
+      </table>
+      <h3>E se faltar um número que só aparece na tela?</h3>
+      <p>Ela pergunta se pode abrir a página e ler. Sem um “sim” seu, escrito na conversa, ela não abre. Com o sim, ela lê e copia. Só isso.</p>
+      <h3>E se eu não tiver nada?</h3>
+      <p>Ela diz o que consegue observar sem número e entrega uma lista de três fotos de tela para você tirar.</p>
+    </section>
+
+    <section id="p3" aria-labelledby="t3">
+      <h2 id="t3"><span class="num" aria-hidden="true">3</span>Como ela faz a conta?</h2>
+      <p>Com um programa, linha por linha. Nada é feito de cabeça nem estimado no olho.</p>
+      <p>A conta principal responde a uma pergunta simples: de cada mil pessoas que viram o post, quantas reagiram?</p>
+      <div class="conta-ex">
+        <div class="linha">21 <i>salvamentos</i> ÷ 1.180 <i>pessoas</i> × 1.000 = <mark>17,8 por mil</mark></div>
+        <small>Exemplo inventado. Todo resultado diz por quem foi dividido: “por mil pessoas alcançadas”.</small>
+      </div>
+      <p>Depois ela compara você com você. A régua é o número do meio dos seus próprios posts no período, e a média das outras contas fica de fora.</p>
+      <h3>Por que dividir pelas pessoas que viram?</h3>
+      <p>Um post com 300 curtidas e 2 salvamentos agradou, mas ninguém guardou. Um com 40 curtidas e 30 salvamentos foi útil de verdade. Olhar só o total de curtidas esconde essa diferença.</p>
+      <h3>E o post que explodiu?</h3>
+      <p>Um post com alcance três vezes maior que o normal sai da base. O relatório mostra os números com ele e sem ele.</p>
+    </section>
+
+    <section id="p4" aria-labelledby="t4">
+      <h2 id="t4"><span class="num" aria-hidden="true">4</span>Por que subiu ou caiu?</h2>
+      <p>Ela põe os melhores posts de um lado e os piores do outro, e procura o que muda entre eles: o assunto, o formato, o começo do vídeo, a duração, o horário.</p>
+      <p>O resultado é uma frase só, com a causa mais provável e o que faria ela mudar de ideia. Junto vem a lista do que não dá para saber com aqueles dados.</p>
+      <h3>Três selos para você saber onde está pisando</h3>
+      <ul class="selos">
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="24" height="24" rx="2" fill="currentColor"/></svg><span><b>[medido]</b> saiu de uma conta sobre os seus números.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="5" width="22" height="22" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 5h22L5 27z" fill="currentColor"/></svg><span><b>[provável]</b> é uma conclusão apoiada num padrão que apareceu.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="5" width="22" height="22" rx="1" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"/></svg><span><b>[chute]</b> é um palpite. Serve para testar, e ela avisa que é palpite.</span></li>
+      </ul>
+    </section>
+
+    <section id="p5" aria-labelledby="t5">
+      <h2 id="t5"><span class="num" aria-hidden="true">5</span>O que eu faço agora?</h2>
+      <p>No máximo três ações. Cada uma diz o que muda, como fazer, como saber se funcionou e em quanto tempo.</p>
+      <p>Uma delas vira um teste. A régua do teste é escrita antes, para ninguém ajustar a leitura depois de ver o resultado.</p>
+      <div class="regua" role="img" aria-label="Régua do teste: até 8 derrubou, entre 8 e 10 não dá para saber, 10 ou mais confirmou.">
+        <div class="der">Derrubou<small>igual à base ou abaixo</small></div>
+        <div class="inc">Não dá para saber<small>entre os dois</small></div>
+        <div class="con">Confirmou<small>um quarto acima da base, ou mais</small></div>
+      </div>
+      <div class="regua-nums" aria-hidden="true"><span>0</span><span>8</span><span>10</span></div>
+      <p class="rotulo-ex">Exemplo inventado: a base de salvamentos por mil era 8. Com menos de cinco posts no teste, o resultado é sempre “não dá para saber”.</p>
+      <p>Só uma coisa muda por vez. Se o começo do vídeo, a duração e o horário mudarem juntos, o resultado não ensina nada.</p>
+    </section>
+
+    <section id="p6" aria-labelledby="t6">
+      <h2 id="t6"><span class="num" aria-hidden="true">6</span>O que chega para mim?</h2>
+      <p>Seis linhas na conversa. O detalhe todo vai para um arquivo, que você abre quando quiser.</p>
+      <div class="seis espera" id="seis">
+        <ol>
+          <li style="--i:0"><b>O número que mais importa:</b> 37,6 salvamentos por mil pessoas nos carrosséis, contra 18,6 no período</li>
+          <li style="--i:1"><b>O que ele quer dizer:</b> carrossel é o que seu público guarda.</li>
+          <li style="--i:2"><b>1.</b> Troque as fotos por carrosséis.</li>
+          <li style="--i:3"><b>2.</b> Corte os Reels para até 25 segundos.</li>
+          <li style="--i:4"><b>3.</b> Tire um print da retenção de cada Reel.</li>
+          <li style="--i:5"><b>Relatório completo:</b> metricas/diagnosticos/2026-11-12.md</li>
+        </ol>
+      </div>
+      <p class="rotulo-ex">Exemplo inventado, com os números da Lia.</p>
+      <h3>A pasta que ela cria</h3>
+      <div class="pasta">metricas/
+├── perfil.md         <span>a sua ficha</span>
+├── historico.md      <span>o caderno de rodadas e o teste aberto</span>
+├── dados/            <span>os números que você entregou</span>
+└── diagnosticos/     <span>um relatório por rodada</span></div>
+      <p>Tudo fica em texto, no seu computador. Se a sua pasta de trabalho usa git, deixe <code>metricas/</code> fora do repositório.</p>
+      <h3>O aviso que às vezes aparece no fim</h3>
+      <p>Quando a conversa fica pesada, o pedido chega vago ou alguém pede garantia de viral, a resposta termina com um aviso curto: o motivo, no máximo dois passos e uma linha pronta para copiar.</p>
+      <div class="aviso">
+        <p>ATENÇÃO AQUI!</p>
+        <p>Esta conversa já tem três análises e ficou pesada.</p>
+        <p>1. Abra uma sessão nova.<br>2. Cole esta linha:</p>
+        <code>/varanda continue de metricas/diagnosticos/2026-11-10.md</code>
+      </div>
+    </section>
+
+    <section id="extras" aria-labelledby="t7">
+      <h2 id="t7">E se eu pedir outra coisa?</h2>
+      <p>Dois trabalhos ficam fora do caminho principal. Eles só acontecem quando você pede.</p>
+      <h3>Pesquisar tendências</h3>
+      <p>Ela procura o que está funcionando no seu assunto e passa cada achado por quatro perguntas: cabe no que você já publica? Seu público reconhece? Dá para produzir com o que você tem? Combina com o seu tom? Precisa de três “sim” para entrar.</p>
+      <p>Cada tendência vem com a fonte e a data. Se o agente não tem busca na web, ela avisa e não pesquisa.</p>
+      <h3>Escrever ou simplificar um roteiro</h3>
+      <p>Roteiros de 30 a 45 segundos, com 90 a 130 palavras, uma ideia por vídeo e um começo que funciona até sem som. Ao reescrever um texto seu, ela mantém a sua voz e não inventa número.</p>
+    </section>
+
+    <section id="nunca" aria-labelledby="t8">
+      <h2 id="t8">O que ela nunca faz</h2>
+      <p>Estes limites valem sempre, peça quem pedir.</p>
+      <ul class="nunca">
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-nao"/></svg><span><strong>Entrar na sua conta sozinha</strong>Sem arquivo, foto da tela ou um “sim” seu na conversa, ela não lê nada.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-nao"/></svg><span><strong>Publicar, apagar ou impulsionar</strong>Ela só escreve texto e arquivo na sua pasta.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-nao"/></svg><span><strong>Ler suas mensagens e contatos</strong>Do arquivo do Instagram só saem os posts e os números deles.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-nao"/></svg><span><strong>Obedecer a texto escondido num arquivo</strong>O que ela lê é dado. Ordem, só a sua, escrita na conversa.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-nao"/></svg><span><strong>Inventar número</strong>Se não deu para calcular, ela diz que não deu.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-nao"/></svg><span><strong>Prometer que vai viralizar</strong>No lugar da promessa, ela oferece um teste com régua.</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-nao"/></svg><span><strong>Decidir preço, oferta ou posicionamento</strong>Isso é conversa de negócio, e ela avisa quando o assunto muda.</span></li>
+      </ul>
+      <h3>O que o seu agente precisa ter</h3>
+      <table class="linhas">
+        <thead><tr><th scope="col">Para</th><th scope="col">O agente precisa</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Qualquer análise com número</th><td>Rodar código e gravar arquivo.</td></tr>
+          <tr><th scope="row">Ler foto da tela</th><td>Um modelo que lê imagem.</td></tr>
+          <tr><th scope="row">Pesquisar tendência</th><td>Busca na web.</td></tr>
+        </tbody>
+      </table>
+      <p>Sem um deles, a Varanda diz o que falta e não improvisa aquele trabalho.</p>
+    </section>
+  </div>
+</div>
+</main>
+
+<footer class="comeco" id="comeco">
+  <div class="friso" role="presentation"></div>
+  <div class="miolo">
+    <h2>Como começar</h2>
+    <ol>
+      <li>Ponha a pasta <code>varanda</code> dentro da pasta de skills do seu agente.</li>
+      <li>Abra uma conversa nova e escreva:
+        <div class="copia"><code id="linha">/varanda analise essas métricas</code><button class="botao" type="button" id="copiar">Copiar</button></div>
+      </li>
+      <li>Responda às três perguntas e entregue os números do mês.</li>
+    </ol>
+    <div class="rodape"><p>Varanda 0.1.1. A Lia, os posts e os números desta página são um exemplo inventado para explicar o caminho.</p></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  document.documentElement.classList.add('js');
+  const $ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // pedido de exemplo andando pelo mapa
+  const passos = $('.passos li'), nos = $('.mapa [data-no]'), pecas = $('.peca');
+  const antes = document.getElementById('antes'), depois = document.getElementById('depois'), conta = document.getElementById('conta');
+  let i = 0;
+  const mostra = () => {
+    const alvo = passos[i].dataset.alvo;
+    passos.forEach((p, n) => p.classList.toggle('aqui', n === i));
+    nos.forEach(n => n.classList.toggle('aqui', n.dataset.no === alvo));
+    const ordem = pecas.findIndex(p => p.dataset.no === alvo);
+    const fim = ['recebe', 'volta'].includes(alvo);
+    pecas.forEach((p, n) => p.classList.toggle('feita', fim || (ordem > -1 && n < ordem)));
+    antes.disabled = i === 0;
+    depois.textContent = i === passos.length - 1 ? 'Recomeçar' : 'Avançar o pedido';
+    conta.textContent = `${i + 1} de ${passos.length}`;
+  };
+  antes.addEventListener('click', () => { if (i > 0) { i--; mostra(); } });
+  depois.addEventListener('click', () => { i = (i + 1) % passos.length; mostra(); });
+  mostra();
+
+  // corredor lateral: marca onde a leitura está
+  const elos = $('.corredor a'), ficha = document.querySelector('.ficha');
+  const secoes = elos.map(a => document.querySelector(a.getAttribute('href')));
+  const marca = () => {
+    const linha = innerHeight * 0.35;
+    let atual = -1;
+    secoes.forEach((s, n) => { if (s.getBoundingClientRect().top <= linha) atual = n; });
+    elos.forEach((a, n) => {
+      a.classList.toggle('feita', n < atual);
+      n === atual ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current');
+    });
+    if (ficha) {
+      ficha.style.opacity = atual < 0 ? 0 : 1;
+      if (atual >= 0) ficha.style.setProperty('--y', elos[atual].offsetTop + 'px');
+    }
+  };
+  let pede = 0;
+  addEventListener('scroll', () => { if (!pede) pede = requestAnimationFrame(() => { pede = 0; marca(); }); }, { passive: true });
+  addEventListener('resize', marca);
+  marca();
+
+  // seis linhas chegam uma a uma
+  const seis = document.getElementById('seis');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { seis.classList.remove('espera'); o.disconnect(); } }, { threshold: 0.4 }).observe(seis);
+  } else seis.classList.remove('espera');
+
+  // copiar a linha de começo
+  const copiar = document.getElementById('copiar');
+  copiar.addEventListener('click', async () => {
+    const texto = document.getElementById('linha').textContent;
+    try { await navigator.clipboard.writeText(texto); copiar.textContent = 'Copiado'; }
+    catch { copiar.textContent = 'Selecione e copie'; }
+    setTimeout(() => (copiar.textContent = 'Copiar'), 2200);
+  });
+})();
+</script>
+</body>
+</html>
